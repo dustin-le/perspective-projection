@@ -1,6 +1,6 @@
-// Dalio, Brian A.
-// dalioba
-// 2019-10-20
+// Le, Dustin E.
+// dxl0689
+// 2019-10-25
 //----------------------------------------------------------
 #include <ctype.h>
 #include <math.h>
@@ -102,6 +102,12 @@ Model *loadModel( char *fName )
   //--------------------------------------
   int     numVertices = 0;
   int     numFaces    = 0;
+  int     xmin        = 0;
+  int     xmax        = 0;
+  int     ymin        = 0;
+  int     ymax        = 0;
+  int     zmin        = 0;
+  int     zmax        = 0;
   char   *line        = NULL;
   size_t  len         = 0;
   size_t  read;

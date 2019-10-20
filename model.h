@@ -1,6 +1,6 @@
-// Dalio, Brian A.
-// dalioba
-// 2019-10-17
+// Le, Dustin E.
+// dxl0689
+// 2019-10-25
 
 #if !defined( __MODEL_H__ )
 #define __MODEL_H__

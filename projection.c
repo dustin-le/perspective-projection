@@ -1,6 +1,6 @@
-// Dalio, Brian A.
-// dalioba
-// 2019-10-20
+// Le, Dustin E.
+// dxl0689
+// 2019-10-25
 //----------------------------------------------------------
 #include <math.h>
 #include <stdio.h>
@@ -31,6 +31,16 @@ Projection *computeProjection( View *v )
   //       ax, and ay and store them in p->...
   //       Save the camera distance from the view in the
   //       projection.
+
+  p->m_fx = -(v->m_worldXMin);
+  p->m_fy = -(v->m_worldYMin);
+  p->m_gx = v->m_width * v->m_viewportXMin;
+  p->m_gy = v->m_height * v->m_viewportYMin;
+  p->m_sx = (v->m_width * (v->m_viewportXMax - v->m_viewportXMin)) / (v->m_worldXMax - v->m_worldXMin);
+  p->m_sy = (v->m_height * (v->m_viewportYMax - v->m_viewportYMin)) / (v->m_worldYMax - v->m_worldYMin);
+  p->m_ax = p->m_fx * p->m_sx + p->m_gx;
+  p->m_ay = p->m_fy * p->m_sy + p->m_gy;
+  p->m_cameraDistance = v->m_cameraDistance;
 
   return p;
 }
@@ -63,6 +73,16 @@ void projectVertexList( Projection *p, Vertex *v, int numVertices )
   //            perspective adjustment.
   //         2. Once the vertex is adjusted for perspective,
   //            calculate its corresponding screen coordinates.
+
+  if (p->m_cameraDistance != 0)
+  {
+
+  }
+
+  for (int i = 0; i < numVertices; i++)
+  {
+    
+  }
 }
 
 //----------------------------------------------------------
