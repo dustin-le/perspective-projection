@@ -22,9 +22,9 @@ typedef struct _View {
   double m_viewportYMin;
   double m_viewportYMax;
 
-  double m_phi;
-  double m_theta;
-  double m_psi;
+  double m_phi; // Φ
+  double m_theta; // Θ
+  double m_psi; // Ψ
 } View;
 
 //----------------------------------------------------------
