@@ -27,11 +27,6 @@ Projection *computeProjection( View *v )
 {
   Projection *p = allocProjection();
 
-  // TODO: Compute the proper values of fx, fy, gx, gy, sx, sy,
-  //       ax, and ay and store them in p->...
-  //       Save the camera distance from the view in the
-  //       projection.
-
   p->m_fx = -(v->m_worldXMin);
   p->m_fy = -(v->m_worldYMin);
   p->m_gx = v->m_width * v->m_viewportXMin;
@@ -74,14 +69,19 @@ void projectVertexList( Projection *p, Vertex *v, int numVertices )
   //         2. Once the vertex is adjusted for perspective,
   //            calculate its corresponding screen coordinates.
 
-  if (p->m_cameraDistance != 0)
-  {
+  // if (p->m_cameraDistance != 0)
+  // {
 
-  }
+  // }
 
   for (int i = 0; i < numVertices; i++)
   {
-    
+    double old_x = v[i].x;
+    double old_y = v[i].y;
+
+    v[i].x = p->m_sx * old_x + p->m_ax;
+    v[i].y = p->m_sy * old_y + p->m_ay;
+    v[i].z = 0;
   }
 }
 
@@ -90,7 +90,7 @@ void projectVertexList( Projection *p, Vertex *v, int numVertices )
 
 void rotateVertexList( View *view, Vertex *vertex, int numVertices, Vertex center )
 {
-  
+
   double r00 = cos(view->m_psi) * cos(view->m_theta);
   double r01 = -(cos(view->m_theta) * sin(view->m_psi));
   double r02 = sin(view->m_theta);
