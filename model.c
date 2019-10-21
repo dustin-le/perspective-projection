@@ -174,9 +174,6 @@ Model *loadModel( char *fName )
     }
   }
 
-  printf("xmin: %lf | xmax: %lf\n", xmin, xmax);
-  printf("ymin: %lf | ymax: %lf\n", ymin, ymax);
-  printf("zmin: %lf | zmax: %lf\n", zmin, zmax);
   model->m_center.x = xmin + ((xmax - xmin) / 2);
   model->m_center.y = ymin + ((ymax - ymin) / 2);
   model->m_center.z = zmin + ((zmax - zmin) / 2);
