@@ -102,18 +102,15 @@ Model *loadModel( char *fName )
   //--------------------------------------
   int     numVertices = 0;
   int     numFaces    = 0;
-  int     xmin        = 0;
-  int     xmax        = 0;
-  int     ymin        = 0;
-  int     ymax        = 0;
-  int     zmin        = 0;
-  int     zmax        = 0;
+  double  xmin        = 0;
+  double  xmax        = 0;
+  double  ymin        = 0;
+  double  ymax        = 0;
+  double  zmin        = 0;
+  double  zmax        = 0;
   char   *line        = NULL;
   size_t  len         = 0;
   size_t  read;
-
-  // TODO: Declare variables to hold the mins and maxes for
-  //       x, y, and z.  Initialize them properly.
 
   while ( ( read = getline( &line, &len, fp ) ) != -1 ) {
     char *ptr = line;
@@ -147,9 +144,14 @@ Model *loadModel( char *fName )
         fprintf( stderr, "loadModel: Unable to load vertex at line %d.", lineNum );
       }
 
-      // TODO: Keeping running values for mins and maxes
-      //       for x, y, z.  (Use the min, max functions
-      //       declared above.)
+      xmin = min(xmin, vertex->x);
+      xmax = max(xmax, vertex->x);
+
+      ymin = min(ymin, vertex->y);
+      ymax = max(ymax, vertex->y);
+
+      zmin = min(zmin, vertex->z);
+      zmax = max(zmax, vertex->z);
 
       vertex++;
       continue;
@@ -172,9 +174,12 @@ Model *loadModel( char *fName )
     }
   }
 
-  // TODO: Using the tracked mins and maxes for x, y, and z
-  //       compute the center of the model and store its x,
-  //       y, z coordinates in model->m_center.
+  printf("xmin: %lf | xmax: %lf\n", xmin, xmax);
+  printf("ymin: %lf | ymax: %lf\n", ymin, ymax);
+  printf("zmin: %lf | zmax: %lf\n", zmin, zmax);
+  model->m_center.x = xmin + ((xmax - xmin) / 2);
+  model->m_center.y = ymin + ((ymax - ymin) / 2);
+  model->m_center.z = zmin + ((zmax - zmin) / 2);
 
   //--------------------------------------
   if ( line != NULL ) {

@@ -90,12 +90,7 @@ void projectVertexList( Projection *p, Vertex *v, int numVertices )
 
 void rotateVertexList( View *view, Vertex *vertex, int numVertices, Vertex center )
 {
-  // TODO: Using the Euler angles given in the view, traverse the
-  //       given list of vertices (there are numVertices of them)
-  //       and rotate each vertex.
-  //
-  //       Compute the r00 through r22 values and the ex, ey, ez
-  //       values _before_ looping through the vertex list!
+  
   double r00 = cos(view->m_psi) * cos(view->m_theta);
   double r01 = -(cos(view->m_theta) * sin(view->m_psi));
   double r02 = sin(view->m_theta);
@@ -114,9 +109,13 @@ void rotateVertexList( View *view, Vertex *vertex, int numVertices, Vertex cente
 
   for (int i = 0; i < numVertices; i ++)
   {
-    vertex[i].x = (r00 * vertex[i].x) + (r01 * vertex[i].y) + (r02 * vertex[i].z) + ex;
-    vertex[i].y = (r10 * vertex[i].x) + (r11 * vertex[i].y) + (r12 * vertex[i].z) + ey;
-    vertex[i].z = (r20 * vertex[i].x) + (r21 * vertex[i].y) + (r22 * vertex[i].z) + ez;
+    double old_x = vertex[i].x;
+    double old_y = vertex[i].y;
+    double old_z = vertex[i].z;
+
+    vertex[i].x = (r00 * old_x) + (r01 * old_y) + (r02 * old_z) + ex;
+    vertex[i].y = (r10 * old_x) + (r11 * old_y) + (r12 * old_z) + ey;
+    vertex[i].z = (r20 * old_x) + (r21 * old_y) + (r22 * old_z) + ez;
   }
 
 }
