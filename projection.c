@@ -61,27 +61,30 @@ void freeProjection( Projection *p )
 //----------------------------------------------------------
 void projectVertexList( Projection *p, Vertex *v, int numVertices )
 {
-  // TODO: Using the projection parameters in p, traverse the
-  //       given list of vertices (there are numVertices of them)
-  //       and project each vertex:
-  //         1. If camera distance is not 0.0, first do a
-  //            perspective adjustment.
-  //         2. Once the vertex is adjusted for perspective,
-  //            calculate its corresponding screen coordinates.
-
-  // if (p->m_cameraDistance != 0)
-  // {
-
-  // }
-
-  for (int i = 0; i < numVertices; i++)
+  if (p->m_cameraDistance != 0)
   {
-    double old_x = v[i].x;
-    double old_y = v[i].y;
+    for (int i = 0; i < numVertices; i++)
+    {
+      double old_x = v[i].x / (1 - v[i].z / p->m_cameraDistance);
+      double old_y = v[i].y / (1 - v[i].z / p->m_cameraDistance);
 
-    v[i].x = p->m_sx * old_x + p->m_ax;
-    v[i].y = p->m_sy * old_y + p->m_ay;
-    v[i].z = 0;
+      v[i].x = p->m_sx * old_x + p->m_ax;
+      v[i].y = p->m_sy * old_y + p->m_ay;
+      v[i].z = 0;
+    }
+  }
+
+  else
+  {
+    for (int i = 0; i < numVertices; i++)
+    {
+      double old_x = v[i].x;
+      double old_y = v[i].y;
+
+      v[i].x = p->m_sx * old_x + p->m_ax;
+      v[i].y = p->m_sy * old_y + p->m_ay;
+      v[i].z = 0;
+    }
   }
 }
 
@@ -91,17 +94,17 @@ void projectVertexList( Projection *p, Vertex *v, int numVertices )
 void rotateVertexList( View *view, Vertex *vertex, int numVertices, Vertex center )
 {
 
-  double r00 = cos(view->m_psi) * cos(view->m_theta);
-  double r01 = -(cos(view->m_theta) * sin(view->m_psi));
-  double r02 = sin(view->m_theta);
+  double r00 = cos(DEGREES_TO_RADIANS(view->m_psi)) * cos(DEGREES_TO_RADIANS(view->m_theta));
+  double r01 = -(cos(DEGREES_TO_RADIANS(view->m_theta)) * sin(DEGREES_TO_RADIANS(view->m_psi)));
+  double r02 = sin(DEGREES_TO_RADIANS(view->m_theta));
 
-  double r10 = cos(view->m_phi) * sin(view->m_psi) + cos(view->m_psi) * sin(view->m_phi) * sin(view->m_theta);
-  double r11 = cos(view->m_phi) * cos(view->m_psi) - sin(view->m_phi) * sin(view->m_psi) * sin(view->m_theta);
-  double r12 = -(cos(view->m_theta) * sin(view->m_phi));
+  double r10 = cos(DEGREES_TO_RADIANS(view->m_phi)) * sin(DEGREES_TO_RADIANS(view->m_psi)) + cos(DEGREES_TO_RADIANS(view->m_psi)) * sin(DEGREES_TO_RADIANS(view->m_phi)) * sin(DEGREES_TO_RADIANS(view->m_theta));
+  double r11 = cos(DEGREES_TO_RADIANS(view->m_phi)) * cos(DEGREES_TO_RADIANS(view->m_psi)) - sin(DEGREES_TO_RADIANS(view->m_phi)) * sin(DEGREES_TO_RADIANS(view->m_psi)) * sin(DEGREES_TO_RADIANS(view->m_theta));
+  double r12 = -(cos(DEGREES_TO_RADIANS(view->m_theta)) * sin(DEGREES_TO_RADIANS(view->m_phi)));
 
-  double r20 = -(cos(view->m_phi) * cos(view->m_psi) * sin(view->m_theta)) + sin(view->m_phi) * sin(view->m_psi);
-  double r21 = cos(view->m_phi) * sin(view->m_psi) * sin(view->m_theta) + cos(view->m_psi) * sin(view->m_phi);
-  double r22 = cos(view->m_phi) * cos(view->m_theta);
+  double r20 = -(cos(DEGREES_TO_RADIANS(view->m_phi)) * cos(DEGREES_TO_RADIANS(view->m_psi)) * sin(DEGREES_TO_RADIANS(view->m_theta))) + sin(DEGREES_TO_RADIANS(view->m_phi)) * sin(DEGREES_TO_RADIANS(view->m_psi));
+  double r21 = cos(DEGREES_TO_RADIANS(view->m_phi)) * sin(DEGREES_TO_RADIANS(view->m_psi)) * sin(DEGREES_TO_RADIANS(view->m_theta)) + cos(DEGREES_TO_RADIANS(view->m_psi)) * sin(DEGREES_TO_RADIANS(view->m_phi));
+  double r22 = cos(DEGREES_TO_RADIANS(view->m_phi)) * cos(DEGREES_TO_RADIANS(view->m_theta));
 
   double ex = -(r00 * center.x) - (r01 * center.y) - (r02 * center.z) + center.x;
   double ey = -(r10 * center.x) - (r11 * center.y) - (r12 * center.z) + center.y;
